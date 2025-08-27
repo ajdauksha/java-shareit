@@ -1,8 +1,10 @@
 package ru.practicum.shareit.item;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
@@ -10,6 +12,7 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(path = "/items")
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto create(
             @Valid @RequestBody ItemDto itemDto,
-            @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+            @RequestHeader("X-Sharer-User-Id") @Positive Long ownerId) {
         return itemService.create(itemDto, ownerId);
     }
 
@@ -30,7 +33,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getAllByOwnerId(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public List<ItemDto> getAllByOwnerId(@RequestHeader("X-Sharer-User-Id") @Positive Long ownerId) {
         return itemService.getAllByOwnerId(ownerId);
     }
 
@@ -38,13 +41,13 @@ public class ItemController {
     public ItemDto update(
             @PathVariable Long id,
             @RequestBody ItemUpdateDto itemDto,
-            @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+            @RequestHeader("X-Sharer-User-Id") @Positive Long ownerId) {
         return itemService.update(id, itemDto, ownerId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable @Positive Long id) {
         itemService.delete(id);
     }
 
