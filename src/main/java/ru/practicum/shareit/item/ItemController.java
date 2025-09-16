@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.service.ItemService;
@@ -56,4 +57,13 @@ public class ItemController {
             @RequestParam String text) {
         return itemService.search(text);
     }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(
+            @PathVariable Long itemId,
+            @Valid @RequestBody CommentDto commentDto,
+            @RequestHeader("X-Sharer-User-Id") Long authorId) {
+        return itemService.addComment(itemId, commentDto, authorId);
+    }
+
 }
