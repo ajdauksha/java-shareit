@@ -29,7 +29,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ItemDto getById(@PathVariable Long id) {
+    public ItemDto getById(@PathVariable @Positive Long id) {
         return itemService.getById(id);
     }
 
@@ -60,9 +60,9 @@ public class ItemController {
 
     @PostMapping("/{itemId}/comment")
     public CommentDto addComment(
-            @PathVariable Long itemId,
+            @PathVariable @Positive Long itemId,
             @Valid @RequestBody CommentDto commentDto,
-            @RequestHeader("X-Sharer-User-Id") Long authorId) {
+            @RequestHeader("X-Sharer-User-Id") @Positive Long authorId) {
         return itemService.addComment(itemId, commentDto, authorId);
     }
 
