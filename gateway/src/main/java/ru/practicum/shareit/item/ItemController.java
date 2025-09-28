@@ -11,6 +11,8 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 
+import java.util.Collections;
+
 
 @Validated
 @RestController
@@ -54,6 +56,9 @@ public class ItemController {
     @GetMapping("/search")
     public ResponseEntity<Object> search(
             @RequestParam String text) {
+        if (null == text || text.isBlank()) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
         return itemClient.search(text);
     }
 
